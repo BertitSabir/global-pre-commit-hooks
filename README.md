@@ -35,7 +35,7 @@ This setup:
 
 ```bash
 # Clone this repository
-git clone https://github.com/yourusername/global-pre-commit-hooks.git
+git clone https://github.com/BertitSabir/global-pre-commit-hooks.git
 cd global-pre-commit-hooks
 
 # Make the installation script executable
