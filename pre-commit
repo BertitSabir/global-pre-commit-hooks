@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+hook_dir="$(cd "$(dirname "$0")" && pwd)"
+
+function run-pre-commit() {
+  local configFile="$1"
+  shift
+
+  if type pre-commit &>/dev/null; then
+    pre-commit hook-impl --hook-type=pre-commit --hook-dir="$hook_dir" --config="$configFile" -- "$@"
+  else
+    echo 'pre-commit not found.' 1>&2
+    exit 1
+  fi
+}
+
+if [ -f "$HOME/.config/pre-commit/pre-commit-config.yaml" ]; then
+  run-pre-commit "$HOME/.config/pre-commit/pre-commit-config.yaml" "$@"
+fi
+
+if [ -f .pre-commit-config.yaml ]; then
+  run-pre-commit .pre-commit-config.yaml "$@"
+fi
+
+if [ -e ./.git/hooks/pre-commit ]; then
+  ./.git/hooks/pre-commit "$@"
+fi
